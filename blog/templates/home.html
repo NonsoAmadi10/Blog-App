@@ -1,0 +1,30 @@
+{%extends "layout.html"%}
+{% block content%}
+    {%for post in posts.items %}
+       <article class="container card mb-3 p-3">
+    
+           <div class="media-body">
+                <img src= "{{url_for('static', filename='profile_pic/'+ post.author.image_file)}}" class= " float-left w-25 h-25 mb-3 pt-3 mr-3" alt="">
+           <h6><a  href = "{{ url_for('users.user_post', username=post.author.username) }}" class= ' ml-3 mr-3 float-right'>{{post.author.username}}</a></h6>
+           <small class="text-muted float-right">{{post.date_posted.strftime('%Y-%m-%d')}}</small>&nbsp;
+           <h1><a href="{{url_for('post.post', post_id=post.id )}}"> {{post.title}} </a></h1>
+           <hr>
+           </div>
+           <p class= 'article-content'>
+               {{post.content}}
+           </p>
+           
+        </article>
+    {%endfor%}
+    {%for page_num in posts.iter_pages(left_edge=1, right_edge=2 , left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+            <a href="{{url_for('Main.home',page=page_num)}}" class="btn  btn-default mb-4 btn-info">{{page_num}}</a>
+            {%else%}
+              <a href="{{url_for('Main.home',page=page_num)}}" class="btn btn-default   mb-4  btn-outline-info">{{page_num}}</a>
+            {%endif%}
+            {%else%}
+                ...
+        {% endif %}
+    {%endfor%}
+{%endblock %}
